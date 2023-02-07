@@ -21,7 +21,6 @@ fun TodoList(
     }
 }
 
-//Preview
 @Preview
 @Composable
 fun TodoListPreview() {
