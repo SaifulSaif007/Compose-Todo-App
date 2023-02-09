@@ -12,16 +12,30 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import com.saiful.composetodoapp.ui.screen.TaskScreen
 import com.saiful.composetodoapp.ui.screen.TodoList
-import com.saiful.composetodoapp.ui.theme.ComposeTodoAppTheme
 import com.saiful.composetodoapp.ui.viewModel.TaskViewModel
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            ComposeTodoAppTheme {
-                HomeScreen()
+            val navController: NavHostController = rememberNavController()
+
+            NavHost(
+                navController = navController,
+                startDestination = "list"
+            ) {
+                composable("list") {
+                    HomeScreen { navController.navigate("task") }
+                }
+                composable("task") {
+                    TaskScreen()
+                }
             }
         }
     }
@@ -40,7 +54,10 @@ fun TodoListScreen(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeScreen(modifier: Modifier = Modifier) {
+fun HomeScreen(
+    modifier: Modifier = Modifier,
+    onNavigateToTask: () -> Unit
+) {
     Scaffold(
         modifier = Modifier,
         topBar = {
@@ -49,7 +66,7 @@ fun HomeScreen(modifier: Modifier = Modifier) {
             )
         },
         floatingActionButton = {
-            FloatingActionButton(onClick = { /*TODO*/ }) {
+            FloatingActionButton(onClick = onNavigateToTask) {
                 Icon(Icons.Filled.Add, contentDescription = "Add Task")
             }
         }
@@ -67,5 +84,5 @@ fun HomeScreen(modifier: Modifier = Modifier) {
 @Preview(showBackground = true)
 @Composable
 fun HomeScreenPreview() {
-    HomeScreen()
+    HomeScreen(onNavigateToTask = {})
 }
