@@ -10,20 +10,23 @@ import com.saiful.composetodoapp.model.Task
 @Composable
 fun TodoList(
     modifier: Modifier = Modifier,
-    list: List<Task>
+    list: List<Task>,
+    taskUpdate: (Task) -> Unit,
 ) {
     LazyColumn {
-        items(list) { it ->
+        items(
+            items = list,
+            key = { task -> task.id }
+        ) { task ->
             TodoCard(
-                task = it,
-                taskUpdate = {})
+                title = task.task,
+                description = task.description,
+                checked = task.done,
+                checkChange = {
+                    taskUpdate.invoke(task)
+                }
+            )
         }
     }
-}
 
-//Preview
-@Preview
-@Composable
-fun TodoListPreview() {
-    TodoList(list = listOf(Task(1, "Jetpack", "compose", true)))
 }
