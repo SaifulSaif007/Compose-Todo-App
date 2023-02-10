@@ -12,9 +12,15 @@ class TaskViewModel : ViewModel() {
     val tasks: List<Task>
         get() = _tasks
 
-
     fun remove(task: Task) {
         _tasks.remove(task)
+    }
+
+    fun add(taskName: String, taskDes: String, navigateBack: () -> Unit) {
+        _tasks.add(
+            Task(_tasks.size, taskName, taskDes, false)
+        )
+        navigateBack.invoke()
     }
 
     fun toggleCheck(task: Task) {

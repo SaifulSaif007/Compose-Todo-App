@@ -4,7 +4,7 @@ import com.saiful.composetodoapp.model.Task
 
 class TaskRepo {
 
-    fun getAllTask() = List(20) { i ->
+    fun getAllTask() = List(2) { i ->
         Task(id = i, task = "Task # $i", "none", false)
     }
 }

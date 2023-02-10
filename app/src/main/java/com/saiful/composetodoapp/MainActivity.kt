@@ -25,16 +25,16 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             val navController: NavHostController = rememberNavController()
-
+            val taskViewModel: TaskViewModel = viewModel()
             NavHost(
                 navController = navController,
                 startDestination = "list"
             ) {
                 composable("list") {
-                    HomeScreen { navController.navigate("task") }
+                    HomeScreen(taskViewModel) { navController.navigate("task") }
                 }
                 composable("task") {
-                    TaskScreen()
+                    TaskScreen(taskViewModel) { navController.popBackStack() }
                 }
             }
         }
@@ -44,7 +44,7 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun TodoListScreen(
     modifier: Modifier = Modifier,
-    taskViewModel: TaskViewModel = viewModel()
+    taskViewModel: TaskViewModel
 ) {
     TodoList(
         list = taskViewModel.tasks,
@@ -55,7 +55,7 @@ fun TodoListScreen(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(
-    modifier: Modifier = Modifier,
+    taskViewModel: TaskViewModel,
     onNavigateToTask: () -> Unit
 ) {
     Scaffold(
@@ -73,16 +73,14 @@ fun HomeScreen(
     ) { contentPadding ->
         Box(modifier = Modifier.padding(contentPadding)) {
             Surface {
-                TodoListScreen()
+                TodoListScreen(taskViewModel = taskViewModel)
             }
         }
-
     }
-
 }
 
 @Preview(showBackground = true)
 @Composable
 fun HomeScreenPreview() {
-    HomeScreen(onNavigateToTask = {})
+    HomeScreen(taskViewModel = TaskViewModel()) {}
 }

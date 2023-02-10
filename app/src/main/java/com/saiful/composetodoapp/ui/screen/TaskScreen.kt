@@ -7,12 +7,15 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.min
-import com.saiful.composetodoapp.TodoListScreen
+import com.saiful.composetodoapp.ui.viewModel.TaskViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TaskScreen(modifier: Modifier = Modifier) {
+fun TaskScreen(
+    taskViewModel: TaskViewModel,
+    navigateBack: () -> Unit
+) {
+
     Scaffold(
         topBar = {
             SmallTopAppBar(
@@ -22,14 +25,15 @@ fun TaskScreen(modifier: Modifier = Modifier) {
     ) { contentPadding ->
         Box(modifier = Modifier.padding(contentPadding)) {
             Surface {
-                TaskScreenContent()
+                TaskScreenContent(taskViewModel, navigateBack)
             }
         }
     }
 }
 
 @Composable
-fun TaskScreenContent() {
+fun TaskScreenContent(taskViewModel: TaskViewModel, navigateBack: () -> Unit) {
+
     var taskName by remember { mutableStateOf("") }
     var taskDescription by remember { mutableStateOf("") }
 
@@ -61,7 +65,9 @@ fun TaskScreenContent() {
                 modifier = Modifier
                     .padding(horizontal = 12.dp)
                     .widthIn(100.dp, 400.dp),
-                onClick = { /*TODO*/ }) {
+                onClick = {
+                    taskViewModel.add(taskName, taskDescription, navigateBack)
+                }) {
                 Text(text = "Add")
             }
 
@@ -72,5 +78,5 @@ fun TaskScreenContent() {
 @Preview(showBackground = true)
 @Composable
 fun TaskScreenPreview() {
-    TaskScreen()
+    TaskScreen(TaskViewModel()) {}
 }
