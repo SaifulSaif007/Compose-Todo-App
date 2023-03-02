@@ -9,4 +9,12 @@ class TaskRepo {
     }
 
 
+    fun updateTask(){
+        //will do it later
+    }
+
+    fun doNothing(){
+        // dont do anything
+    }
+
 }
