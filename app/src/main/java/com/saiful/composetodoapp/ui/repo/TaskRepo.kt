@@ -7,4 +7,9 @@ class TaskRepo {
     fun getAllTask() = List(2) { i ->
         Task(id = i, task = "Task # $i", "none", false)
     }
+
+    fun removeTask(){
+        // will do it later
+    }
+
 }
